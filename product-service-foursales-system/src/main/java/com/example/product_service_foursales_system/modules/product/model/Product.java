@@ -1,8 +1,12 @@
 package com.example.product_service_foursales_system.modules.product.model;
 
-import com.example.product_service_foursales_system.modules.category.Category;
+import com.example.product_service_foursales_system.modules.category.model.Category;
+import com.example.product_service_foursales_system.modules.product.dto.ProductRequest;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -11,6 +15,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "products")
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Product {
 
     @Id
@@ -37,5 +44,24 @@ public class Product {
     public void prePersist() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
+
+    public static Product of(ProductRequest productRequest, Category category) {
+        return Product
+                .builder()
+                .name(productRequest.getName())
+                .quantityAvailable(productRequest.getQuantityAvailable())
+                .price(productRequest.getPrice())
+                .description(productRequest.getDescription())
+                .category(category)
+                .updatedAt(LocalDateTime.now())
+                .build();
+
     }
 }

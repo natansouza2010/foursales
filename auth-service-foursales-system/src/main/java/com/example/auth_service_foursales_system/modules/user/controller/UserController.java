@@ -5,6 +5,7 @@ import com.example.auth_service_foursales_system.modules.user.dto.AuthResponse;
 import com.example.auth_service_foursales_system.modules.user.dto.UserRequest;
 import com.example.auth_service_foursales_system.modules.user.dto.UserResponse;
 import com.example.auth_service_foursales_system.modules.user.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,7 +21,7 @@ public class UserController {
 
 
     @PostMapping("/user/auth")
-    public AuthResponse getAcessToken(@RequestBody UserRequest userRequest) {
+    public AuthResponse getAcessToken(@Valid @RequestBody UserRequest userRequest) {
         return userService.getAccessToken(userRequest);
     }
 
