@@ -1,8 +1,10 @@
 package com.example.order_service_foursales_system.modules.order.service;
 
 import com.example.order_service_foursales_system.config.exception.ValidationException;
+import com.example.order_service_foursales_system.modules.order.dto.AverageTicketDTO;
 import com.example.order_service_foursales_system.modules.order.dto.OrderDataRequest;
 import com.example.order_service_foursales_system.modules.order.dto.OrderItemRequest;
+import com.example.order_service_foursales_system.modules.order.dto.TopUserPurchaseDTO;
 import com.example.order_service_foursales_system.modules.order.enums.OrderStatus;
 import com.example.order_service_foursales_system.modules.order.model.Order;
 import com.example.order_service_foursales_system.modules.order.model.OrderItem;
@@ -149,5 +151,29 @@ public class OrderService {
                 .status(OrderStatus.PENDING)
                 .orderDate(LocalDateTime.now())
                 .build();
+    }
+
+
+    public List<TopUserPurchaseDTO> getTop5UsersWithMostOrders() {
+        return orderRepository.findTop5UsersWithMostOrders()
+                .stream()
+                .map(result -> new TopUserPurchaseDTO(
+                        (UUID) result[0],
+                        ((Number) result[1]).longValue()))
+                .collect(Collectors.toList());
+    }
+
+
+    public List<AverageTicketDTO> getAverageTicketPerUser() {
+        return orderRepository.findAverageTicketPerUser()
+                .stream()
+                .map(result -> new AverageTicketDTO(
+                        (UUID) result[0],
+                        (Double) result[1]))
+                .collect(Collectors.toList());
+    }
+
+    public BigDecimal getTotalRevenueForCurrentMonth() {
+        return orderRepository.findTotalRevenueForCurrentMonth();
     }
 }
