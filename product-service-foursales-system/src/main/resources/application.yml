@@ -1,0 +1,42 @@
+
+
+
+server:
+  port: 8081
+
+spring:
+  application:
+    name: foursales-product-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/foursales-db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: admin
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+
+
+  sql:
+    init:
+      mode: always
+
+  rabbitmq:
+    host: foursales-rabbit
+    port: 5672
+    username: natan
+    password: natan
+
+
+logging:
+  level:
+    root: INFO
+
+jwt:
+  secret: jwt-key
+  expiration: 3600000 #

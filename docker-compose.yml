@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+
+  foursales-db:
+    image: mysql:8.0
+    container_name: foursales-db
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: foursales-db
+      MYSQL_USER: natan
+      MYSQL_PASSWORD: natan
+    ports:
+      - "3306:3306"
+    networks:
+      - foursales-network
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  foursales-rabbit:
+    image: "rabbitmq:3-management"
+    container_name: foursales-rabbit
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: natan
+      RABBITMQ_DEFAULT_PASS: natan
+    networks:
+      - foursales-network
+
+#  foursales-auth-service:
+#    build:
+#      context: ./auth-service-foursales-system
+#    container_name: foursales-auth-service
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - foursales-db
+#      - foursales-rabbit
+#    environment:
+#      SPRING_RABBITMQ_HOST: foursales-rabbit    #
+#      SPRING_RABBITMQ_PORT: 5672
+#      SPRING_RABBITMQ_USERNAME: natan
+#      SPRING_RABBITMQ_PASSWORD: natan  #
+#      SPRING_DATASOURCE_URL: jdbc:mysql://foursales-db:3306/four-sales-db
+#      SPRING_DATASOURCE_USERNAME: natan
+#      SPRING_DATASOURCE_PASSWORD: natan
+#      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+#    networks:
+#      - foursales-network
+
+networks:
+  foursales-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local
