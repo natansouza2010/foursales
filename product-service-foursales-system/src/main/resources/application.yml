@@ -27,7 +27,7 @@ spring:
       mode: always
 
   rabbitmq:
-    host: foursales-rabbit
+    host: localhost
     port: 5672
     username: natan
     password: natan
@@ -40,3 +40,11 @@ logging:
 jwt:
   secret: jwt-key
   expiration: 3600000 #
+
+
+rabbitmq:
+  queue:
+    name: productStockUpdateQueue
+  exchange:
+    name: productExchange
+  routingkey: product.stock.update.routingKey

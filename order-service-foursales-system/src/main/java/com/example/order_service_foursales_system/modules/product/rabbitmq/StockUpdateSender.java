@@ -28,7 +28,6 @@ public class StockUpdateSender {
     }
 
     private String convertMessageToJson(Object message) {
-        // Aqui você pode usar qualquer biblioteca de serialização, como o Jackson
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.writeValueAsString(message);

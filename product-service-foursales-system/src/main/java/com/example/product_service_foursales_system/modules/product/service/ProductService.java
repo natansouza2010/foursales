@@ -3,12 +3,10 @@ package com.example.product_service_foursales_system.modules.product.service;
 import com.example.product_service_foursales_system.config.exception.SuccessResponse;
 import com.example.product_service_foursales_system.config.exception.ValidationException;
 import com.example.product_service_foursales_system.modules.category.service.CategoryService;
+import com.example.product_service_foursales_system.modules.product.dto.*;
 import com.example.product_service_foursales_system.modules.product.repository.ProductRepository;
-import com.example.product_service_foursales_system.modules.product.dto.OrderItemRequest;
-import com.example.product_service_foursales_system.modules.product.dto.ProductRequest;
-import com.example.product_service_foursales_system.modules.product.dto.ProductResponse;
-import com.example.product_service_foursales_system.modules.product.dto.ProductStockAndPriceResponse;
 import com.example.product_service_foursales_system.modules.product.model.Product;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -97,7 +95,6 @@ public class ProductService {
 
 
         }
-
     }
 
 
@@ -105,6 +102,23 @@ public class ProductService {
     private void validateInformedId(UUID id){
         if(isEmpty(id)){
             throw new ValidationException("The product ID must be informed.");
+        }
+    }
+
+    @Transactional
+    public void updateProductStock(ProductStockUpdateDTO productStockUpdateDTO){
+        var productReceive = findById(productStockUpdateDTO.getProductId());
+        validateQuantityInStock(productStockUpdateDTO, productReceive);
+        productReceive.updateStock(productStockUpdateDTO.getQuantity());
+        productRepository.save(productReceive);
+
+    }
+
+
+    @Transactional
+    protected void validateQuantityInStock(ProductStockUpdateDTO productQuantity, Product existingProduct){
+        if(productQuantity.getQuantity() > existingProduct.getQuantityAvailable()){
+            throw new ValidationException(String.format("The product %s is out of stock.", existingProduct.getId()));
         }
     }
 
