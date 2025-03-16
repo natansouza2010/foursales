@@ -1,8 +1,10 @@
 package com.example.product_service_foursales_system.modules.product.controller;
 
 import com.example.product_service_foursales_system.config.exception.SuccessResponse;
+import com.example.product_service_foursales_system.modules.product.dto.OrderItemRequest;
 import com.example.product_service_foursales_system.modules.product.dto.ProductRequest;
 import com.example.product_service_foursales_system.modules.product.dto.ProductResponse;
+import com.example.product_service_foursales_system.modules.product.dto.ProductStockAndPriceResponse;
 import com.example.product_service_foursales_system.modules.product.service.ProductService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +52,13 @@ public class ProductController {
     @PreAuthorize("hasRole('ADMIN')")
     public SuccessResponse delete (@PathVariable UUID id){
         return productService.delete(id);
+    }
+
+
+    @PostMapping("/check-stock")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public List<ProductStockAndPriceResponse> checkStockAndCalculate(@RequestBody List<OrderItemRequest> items) {
+        return productService.checkStock(items);
     }
 
 

@@ -1,4 +1,4 @@
-package com.example.product_service_foursales_system.modules.product;
+package com.example.product_service_foursales_system.modules.product.repository;
 
 
 import com.example.product_service_foursales_system.modules.product.model.Product;

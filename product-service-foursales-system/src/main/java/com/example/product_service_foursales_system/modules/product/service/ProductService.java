@@ -3,9 +3,11 @@ package com.example.product_service_foursales_system.modules.product.service;
 import com.example.product_service_foursales_system.config.exception.SuccessResponse;
 import com.example.product_service_foursales_system.config.exception.ValidationException;
 import com.example.product_service_foursales_system.modules.category.service.CategoryService;
-import com.example.product_service_foursales_system.modules.product.ProductRepository;
+import com.example.product_service_foursales_system.modules.product.repository.ProductRepository;
+import com.example.product_service_foursales_system.modules.product.dto.OrderItemRequest;
 import com.example.product_service_foursales_system.modules.product.dto.ProductRequest;
 import com.example.product_service_foursales_system.modules.product.dto.ProductResponse;
+import com.example.product_service_foursales_system.modules.product.dto.ProductStockAndPriceResponse;
 import com.example.product_service_foursales_system.modules.product.model.Product;
 import org.springframework.stereotype.Service;
 
@@ -72,6 +74,33 @@ public class ProductService {
         validateInformedId(id);
         return productRepository.findById(id).orElseThrow( () -> new ValidationException("There's no product for the given ID."));
     }
+
+
+    public List<ProductStockAndPriceResponse> checkStock(List<OrderItemRequest> itemsRequest) {
+        return itemsRequest.stream()
+                .map(item -> {
+                    validateStock(item); // Valida se há estoque suficiente
+                    var product = findById(item.getProductId()); // Busca o produto no banco
+                    return new ProductStockAndPriceResponse(product.getId(), product.getPrice());
+                })
+                .collect(Collectors.toList());
+    }
+
+
+    private void validateStock(OrderItemRequest productQuantity){
+        if(isEmpty(productQuantity.getProductId()) || isEmpty(productQuantity.getQuantity())){
+            throw new ValidationException("Product ID and quantity must be informed");
+        }
+        var product = findById(productQuantity.getProductId());
+        if(productQuantity.getQuantity() > product.getQuantityAvailable() ){
+            throw new ValidationException(String.format("The product %s is out of stock.", product.getId()));
+
+
+        }
+
+    }
+
+
 
     private void validateInformedId(UUID id){
         if(isEmpty(id)){

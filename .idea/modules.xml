@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/auth-service-foursales-system.main.iml" filepath="$PROJECT_DIR$/.idea/modules/auth-service-foursales-system.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/foursales-system.iml" filepath="$PROJECT_DIR$/.idea/foursales-system.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/order-service-foursales-system.main.iml" filepath="$PROJECT_DIR$/.idea/modules/order-service-foursales-system.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/product-service-foursales-system.main.iml" filepath="$PROJECT_DIR$/.idea/modules/product-service-foursales-system.main.iml" />
     </modules>
   </component>
