@@ -11,7 +11,27 @@
 * **Docker**
 * **docker-compose**
 * **Spring Cloud OpenFeign**
-  
+
+## Como rodar:
+
+### 1. Clonar o Repositório
+
+Clone o repositório para o seu ambiente local:
+
+### 2. Build os Microsserviços com Gradle
+
+cd auth-service-foursales-system
+./gradlew build
+cd ..
+
+Para todos os microsserviços 
+
+### 3. Rodar docker-compose
+Na raiz do projeto 
+
+docker-compose up --build
+
+
 
 ## Arquitetura Proposta
 
@@ -124,10 +144,10 @@ Criar, visualizar e gerenciar pedidos feitos pelos usuários.
   Lista todos os pedidos do usuário autenticado.
 
 
-## 📊 Consultas SQL Otimizadas
+## 📊 Relatórios
 
 ### Objetivo:
-Executar consultas otimizadas para relatórios.
+Executar consultas  para relatórios.
 
 ### Endpoints:
 - **GET /api/order/top-buyers**  
