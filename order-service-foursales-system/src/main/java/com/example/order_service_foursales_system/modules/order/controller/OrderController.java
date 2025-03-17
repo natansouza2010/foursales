@@ -3,6 +3,7 @@ package com.example.order_service_foursales_system.modules.order.controller;
 
 import com.example.order_service_foursales_system.config.exception.SuccessResponse;
 import com.example.order_service_foursales_system.modules.order.dto.AverageTicketDTO;
+import com.example.order_service_foursales_system.modules.order.dto.OrderDTO;
 import com.example.order_service_foursales_system.modules.order.dto.OrderDataRequest;
 import com.example.order_service_foursales_system.modules.order.dto.TopUserPurchaseDTO;
 import com.example.order_service_foursales_system.modules.order.service.OrderService;
@@ -53,6 +54,7 @@ public class OrderController {
     public List<AverageTicketDTO> getAverageTicketPerUser() {
         return orderService.getAverageTicketPerUser();
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/monthly-revenue")
     public BigDecimal getTotalRevenueForCurrentMonth() {
@@ -60,5 +62,10 @@ public class OrderController {
     }
 
 
+    @GetMapping("/{user_id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public List<OrderDTO> getOrdersByUserId(@PathVariable("user_id") UUID userId) {
+        return orderService.getOrdersByCustomerId(userId);
 
+    }
 }

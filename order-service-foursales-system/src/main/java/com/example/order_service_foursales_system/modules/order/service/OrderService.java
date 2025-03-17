@@ -1,10 +1,7 @@
 package com.example.order_service_foursales_system.modules.order.service;
 
 import com.example.order_service_foursales_system.config.exception.ValidationException;
-import com.example.order_service_foursales_system.modules.order.dto.AverageTicketDTO;
-import com.example.order_service_foursales_system.modules.order.dto.OrderDataRequest;
-import com.example.order_service_foursales_system.modules.order.dto.OrderItemRequest;
-import com.example.order_service_foursales_system.modules.order.dto.TopUserPurchaseDTO;
+import com.example.order_service_foursales_system.modules.order.dto.*;
 import com.example.order_service_foursales_system.modules.order.enums.OrderStatus;
 import com.example.order_service_foursales_system.modules.order.model.Order;
 import com.example.order_service_foursales_system.modules.order.model.OrderItem;
@@ -175,5 +172,19 @@ public class OrderService {
 
     public BigDecimal getTotalRevenueForCurrentMonth() {
         return orderRepository.findTotalRevenueForCurrentMonth();
+    }
+
+
+    public List<OrderDTO> getOrdersByCustomerId(UUID customerId) {
+        List<Order> orders = orderRepository.findByCustomerId(customerId);
+
+        return orders.stream()
+                .map(order -> new OrderDTO(
+                        order.getId(),
+                        order.getCustomerId(),
+                        order.getTotalPrice(),
+                        order.getOrderDate(),
+                        order.getStatus().name()))  // Convertendo o enum Status para string
+                .collect(Collectors.toList());
     }
 }

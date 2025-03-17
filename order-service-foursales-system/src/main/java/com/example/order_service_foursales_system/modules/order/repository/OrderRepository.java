@@ -30,4 +30,6 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
             "WHERE YEAR(o.orderDate) = YEAR(CURRENT_DATE) " +
             "AND MONTH(o.orderDate) = MONTH(CURRENT_DATE)")
     BigDecimal findTotalRevenueForCurrentMonth();
+
+    List<Order> findByCustomerId(UUID customerId);
 }
